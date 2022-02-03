@@ -1,5 +1,6 @@
 package hello.advanced.trace.strategy;
 
+import hello.advanced.trace.strategy.code.Strategy;
 import hello.advanced.trace.strategy.code.strategy.ContextV1;
 import hello.advanced.trace.strategy.code.strategy.StrategyLogic1;
 import hello.advanced.trace.strategy.code.strategy.StrategyLogic2;
@@ -31,6 +32,9 @@ public class ContextV1Test {
         log.info("resultTime={}", resultTime);
     }
 
+    /**
+     * 전략패턴 사용
+     */
     @Test
     void strategyV1() {
         StrategyLogic1 strategyLogic1 = new StrategyLogic1();
@@ -41,9 +45,43 @@ public class ContextV1Test {
         ContextV1 contextV2 = new ContextV1(strategyLogic2);
         contextV2.execute();
 
-
     }
 
+    /**
+     * 전략패턴 사용 : 익명 내부 클래스 적용
+     */
+    @Test
+    void strategyV2() {
+        Strategy strategyLogic1 = new Strategy() {
+            @Override
+            public void call() {
+                log.info("비즈니스 로직1 실행");
+            }
+        };
+        ContextV1 context1 = new ContextV1(strategyLogic1);
+        context1.execute();
+
+        Strategy strategyLogic2 = new Strategy() {
+            @Override
+            public void call() {
+                log.info("비즈니스 로직2 실행");
+            }
+        };
+        ContextV1 context2 = new ContextV1(strategyLogic2);
+        context2.execute();
+    }
+
+    /**
+     * 전략패턴 사용 : 람다 ctrl + alt + N
+     */
+    @Test
+    void strategyV3() {
+        ContextV1 context1 = new ContextV1(() -> log.info("비즈니스 로직1 실행"));
+        context1.execute();
+
+        ContextV1 context2 = new ContextV1(() -> log.info("비즈니스 로직2 실행"));
+        context2.execute();
+    }
 
 
 }
